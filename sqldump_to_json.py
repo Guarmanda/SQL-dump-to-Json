@@ -20,6 +20,7 @@ import re
 transactions = {}
 Json_file = "database.json"
 sql_file = "traceforum.sql"
+indent = 0
 
 # method to handle CREATE TABLE statements and put them in tables dict as "key: [column_name, column_name, ...]"
 # column_name can be found using findall separated by comas
@@ -178,7 +179,10 @@ def main():
 
     # Write out the transactions in json file with indentation
     with open(Json_file, 'w') as fp:
-        json.dump(transactions, fp, indent=4)
+        if(indent > 0):
+            json.dump(transactions, fp, indent=indent)
+        else:
+            json.dump(transactions, fp)
 
 
 
