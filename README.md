@@ -1,6 +1,6 @@
 # SQL-dump-to-Json
 
-At the top of the file, there is two variables:
+At the top of the file, there is three variables:
 ```
 Json_file = "database.json"
 sql_file = "traceforum.sql"
@@ -15,3 +15,4 @@ I made it because I needed it for a university practical work, and I was like, o
 - If you got a script that doesn't work with this script, please take the time to create an issue
 - with the given script in it (or at least a part of it if datas are sensitive)
 ```
+
