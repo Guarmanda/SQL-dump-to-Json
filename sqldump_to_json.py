@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # original source: https://gist.github.com/0xF1/78b221a32bf4e0ef494a
+# Modified by: Valentin Girod
+# This file originally could not really handle sql dump and was designed for only one table
 # Only parse_values, is_insert where kept, the rest was removed or modified a lot. parse_values was also modified a lot to handle multiple 
 # tables
-# Modified by: Valentin Girod
 # Modifications: made it work with any dump sql file by:
 # - concatenating lines not starting with create, set or insert, 
 # - removing comments and empty lines
@@ -11,7 +12,6 @@
 # - added managing of "CREATE TABLE" statements
 # whole database datas (inserts) is in "transactions" dictionary after script execution and sent to a json file
 # tables and columns are stored in 'tables' dictionary and sent to the same json file
-import fileinput
 import csv
 import json
 import sys
@@ -162,6 +162,8 @@ def main():
     file = [line.strip() for line in file if line.strip() != '']
     # replace ") ENGINE.*;" with "); in lines"
     file = [re.sub(r'\) ENGINE.*;', ');', line) for line in file]
+    # replace all ", " with ","
+    file = [line.replace(', ', ',') for line in file]
     # If line doesn't start with create, set or insert, concatenante it with previous line and remove it
     # while there is lines not starting with create, set or insert
     decalage = 0
