@@ -1,5 +1,6 @@
 # SQL-dump-to-Json
 
+This only takes the text from sql file and get everything for it, no need of a mysql database or anything worst
 At the top of the file, there is three variables:
 ```
 Json_file = "database.json"
