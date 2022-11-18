@@ -3,7 +3,8 @@
 This only takes the text from sql file and get everything for it, no need of a mysql database or anything worst
 At the top of the file, there is three variables:
 ```
-Json_file = "database.json"
+Json_file = "database_content.json"
+Json_file2 = "database_tables_and_columns.json"
 sql_file = "traceforum.sql"
 indent = 0 # little file with no indentation and no \n. intent > 0 = bigger file
 ```
