@@ -9,7 +9,8 @@
 # - fixing lack of spaces after "VALUES" or before "("
 # - removing the need of '`' character before VALUES word because many dump files aren't built like this
 # - added managing of "CREATE TABLE" statements
-# whole database is in "transactions" dictionary after script execution and sent to a json file
+# whole database datas (inserts) is in "transactions" dictionary after script execution and sent to a json file
+# tables and columns are stored in 'tables' dictionary and sent to the same json file
 import fileinput
 import csv
 import json
@@ -17,8 +18,10 @@ import sys
 import re
 
 # tables and rows
+tables = {}
 transactions = {}
-Json_file = "database.json"
+Json_file = "database_content.json"
+Json_file2 = "database_tables_and_columns.json"
 sql_file = "traceforum.sql"
 indent = 0
 
@@ -27,8 +30,8 @@ indent = 0
 def parse_create_table(line):
     table_name = re.search('`(.+?)`', line).group(1)
     columns =   re.findall('`(.+?)`', line)
-    transactions[table_name] = []
-    transactions[table_name].append(columns)
+    tables[table_name] = []
+    tables[table_name].append(columns)
 # This prevents prematurely closed pipes from raising
 # an exception in Python
 from signal import signal, SIGPIPE, SIG_DFL
@@ -71,7 +74,15 @@ def parse_values(line, outfile):
     global transactions
     if table_name not in transactions.keys():
         transactions[table_name] = []
-        print(transactions[table_name])
+        # get table columns from line
+        columns = re.findall('`(.+?)`', line)
+        # remove first column (id) because it's table name
+        columns.pop(0)
+        print(table_name)
+        print(columns)
+        # add columns to transactions dict
+        transactions[table_name].append(columns)
+
 
     """
     Given a file handle and the raw values from a MySQL INSERT
@@ -179,10 +190,14 @@ def main():
 
     # Write out the transactions in json file with indentation
     with open(Json_file, 'w') as fp:
+        file2 = open(Json_file2, "w")
         if(indent > 0):
             json.dump(transactions, fp, indent=indent)
+            json.dump(tables, file2, indent=indent)
         else:
             json.dump(transactions, fp)
+            json.dump(tables, file2)
+
 
 
 
