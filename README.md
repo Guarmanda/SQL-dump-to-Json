@@ -8,6 +8,31 @@ Json_file2 = "database_tables_and_columns.json"
 sql_file = "traceforum.sql"
 indent = 0 # little file with no indentation and no \n. intent > 0 = bigger file
 ```
+
+The output is a little bit particular, but th file is slightly smaller than other json outputs, here's why:
+```
+#table name
+"activite": [
+        # column names
+        [
+            "IDAct",
+            "Titre",
+            "TypeAct",
+            "IDCat"
+        ],
+        # all other lines are column values
+        [
+            "1",
+            "Visiter un lien hypertexte",
+            "0",
+            "1"
+        ],
+ ```
+ 
+ With this, column names are written only one time, but you have to get then manually when taking the data with a script
+ 
+ 
+
 Change these to what you want, and have fun.
 
 This script should be able to handle any SQL-dump / creation script, storing all columns in CREATE commands and table contents in INSERT commands in json.
